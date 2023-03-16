@@ -9,3 +9,7 @@ body,
     overflow: hidden;
     text-anchor: middle;
 }
+
+canvas {
+    display: block;
+}

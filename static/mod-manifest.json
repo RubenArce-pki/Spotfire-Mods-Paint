@@ -1,8 +1,8 @@
 {
     "apiVersion": "1.1",
     "version": "1.2.0",
-    "name": "Display Value",
-    "id": "sfire-mods-display-value",
+    "name": "Paint (better than Windows)",
+    "id": "sfire-mods-paint",
     "icon": "icon.svg",
     "dataViewDefinition": {
          "axes": [

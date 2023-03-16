@@ -4,6 +4,7 @@
         "noUnusedLocals": true,
         "allowJs": true,
         "allowUnreachableCode": false,
+        "allowSyntheticDefaultImports":true,
         "noImplicitAny": true,
         "strict": true,
         "charset": "utf8",

@@ -1,11 +1,15 @@
 import * as d3 from "d3";
 import { Size } from "spotfire-api";
+import P5 from "p5";
+import { sketch } from "./paint";
 
 /**
  * Create the graphical elements with attributes that will remain the same through the lifetime of the
  * visualization in order to minimize unnecessary creation of elements in the main
  * interactive visualization loop. Drawing order are controlled via svg group (g) elements.
  */
+//let dashboard: P5 = new P5(sketch);
+new P5(sketch);
 
 const modContainer = d3.select("#mod-container");
 
@@ -50,7 +54,7 @@ export async function render(
     if (hasValue && rows != null) {
         let value = rows[0].continuous("Value");
         let formattedValue = value.formattedValue();
-        displayText = formattedValue == "(Empty)" ? "": formattedValue;
+        displayText = formattedValue == "(Empty)" ? "" : formattedValue;
     }
 
     displayLayer

@@ -25,7 +25,6 @@ window.Spotfire.initialize(async (mod) => {
             } else {
                 mod.controls.errorOverlay.hide("DataView");
 
-                console.log(dataView)
                 const allRows = await dataView.allRows();
                 if (allRows === null) {
                     return;
