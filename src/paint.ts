@@ -1,32 +1,31 @@
-import ItemCard from "./renderItems/itemCard";
+import ButtonItem from "./renderItems/itemCard";
 import P5 from "p5";
 import { colorToPlot } from "./render";
 
-const itemCards: ItemCard[] = [];
-
-let value = 0;
-let isClickPress: boolean = false;
-let isRightClick: boolean = false;
-
-// Creating the sketch itself
 export const sketch = (p5: P5) => {
+    const maxX = document.body.clientWidth;
+    const maxY = document.body.clientHeight;
+    const itemCards: ButtonItem[] = [];
+
+    let isClickPress: boolean = false;
+    let isRightClick: boolean = false;
+
     p5.setup = () => {
         // Creating and positioning the canvas
-        const canvas = p5.createCanvas(document.body.clientWidth, document.body.clientHeight);
+        const canvas = p5.createCanvas(maxX, maxY);
         canvas.parent("app");
         p5.background(0xff);
-        // TODO: paint
-        for (let i = 1; i < 4; i++) {
-            const p = p5.width / 4;
-            const circlePos = p5.createVector(p * i, p5.height / 2);
-            const size = i % 2 !== 0 ? 24 : 32;
-            itemCards.push(new ItemCard(p5, circlePos, size));
-        }
+
+        // Add button to clear:
+        const btnPos = p5.createVector(maxX, maxY);
+        itemCards.push(new ButtonItem(p5, btnPos, "clear"));
     };
 
-    // The sketch draw method
     p5.draw = () => {
-        //itemCards.forEach(item => item.draw());
+        // Draw button
+        itemCards.forEach(item => item.draw());
+
+        // Draw real picture:
         if (isClickPress) {
             if (isRightClick)
                 p5.fill(0xff);
@@ -38,18 +37,15 @@ export const sketch = (p5: P5) => {
         }
     };
     p5.mouseClicked = (event: any) => {
-        if (value === 0) {
-            value = 255;
-        } else {
-            value = 0;
-        }
+        // Check if clear is needed
+        itemCards.forEach(item => {
+            if(item.checkColision(event.pageX, event.pageY))
+                p5.background(0xff);
+        });
     }
     p5.mousePressed = (event: any) => {
         isClickPress = true;
-        if (event.button == 2)
-            isRightClick = true;
-        else
-            isRightClick = false;
+        isRightClick = event.button == 2 ? true : false;
     }
 
     p5.mouseReleased = (event: any) => {

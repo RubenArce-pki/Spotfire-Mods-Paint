@@ -2,7 +2,7 @@ import { Size } from "spotfire-api";
 import P5 from "p5";
 import { sketch } from "./paint";
 
-export let colorToPlot: string;
+export let colorToPlot: string = "#000";
 new P5(sketch);
 
 export async function render(
@@ -17,10 +17,11 @@ export async function render(
     .message { fill: ${context.styling.general.font.color}; font-size: ${context.styling.general.font.fontSize}px; font-weight: ${context.styling.general.font.fontWeight}; font-style: ${context.styling.general.font.fontStyle};}
     `;
 
+    // Set default color:
+    colorToPlot = "#000";
     //Read the data and meta data
     const axes = await dataView.axes();
     //console.log(axes.map(axis => axis.name).join(","));
-    // Print the row values.
     const rows = await dataView.allRows();
     if (rows)
         rows.forEach(row => {
