@@ -5,27 +5,26 @@
     "id": "sfire-mods-paint",
     "icon": "icon.svg",
     "dataViewDefinition": {
-         "axes": [
-             {
-                "name": "Value",
-                "mode": "continuous",
-                "placement": "none",
-                "dropTarget": {
-                    "icon": "YAxis",
-                    "description": "Display {0}"
-                },
-                "dataTypes": {
-                    "allowString": true,
-                    "allowBoolean": true,
-                    "allowDateTime": true,
-                    "allowNumeric": true,
-                    "allowTimeSpan": true
-                }      
-            }
+        "axes": [
+            {
+                "name": "X",
+                "mode": "categorical",
+                "placement": "right",
+                "legendItem": {
+                }
+            },
+            {
+                "name": "Y",
+                "mode": "categorical",
+                "placement": "right",
+                "legendItem": {
+                }
+            } 
         ]
     },
-    "legend": {
-        "defaultVisibility": "hidden"
-    },
-    "files": ["index.html", "main.css", "bundle.js"]
+    "files": [
+        "index.html",
+        "main.css",
+        "bundle.js"
+    ]
 }

@@ -2,14 +2,10 @@ import { render } from "./render";
 
 window.Spotfire.initialize(async (mod) => {
     const context = mod.getRenderContext();
-
-    /**
-     * Create reader function which is actually a one time listener for the provided values.
-     */
+    // Create reader function which is actually a one time listener for the provided values.
     const reader = mod.createReader(
         mod.visualization.data(),
-        mod.windowSize(),
-        mod.visualization.axis("Value")
+        mod.windowSize()
     );
 
     /**

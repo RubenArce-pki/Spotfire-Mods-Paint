@@ -1,24 +1,9 @@
-import * as d3 from "d3";
 import { Size } from "spotfire-api";
 import P5 from "p5";
 import { sketch } from "./paint";
 
-/**
- * Create the graphical elements with attributes that will remain the same through the lifetime of the
- * visualization in order to minimize unnecessary creation of elements in the main
- * interactive visualization loop. Drawing order are controlled via svg group (g) elements.
- */
-//let dashboard: P5 = new P5(sketch);
+export let colorToPlot: string;
 new P5(sketch);
-
-const modContainer = d3.select("#mod-container");
-
-// svg container
-const svg = modContainer
-    .append("svg")
-    .attr("xmlns", "http://www.w3.org/2000/svg");
-
-const displayLayer = svg.append("g").attr("id", "backgroundLayer");
 
 export async function render(
     dataView: Spotfire.DataView,
@@ -33,45 +18,21 @@ export async function render(
     `;
 
     //Read the data and meta data
+    const axes = await dataView.axes();
+    //console.log(axes.map(axis => axis.name).join(","));
+    // Print the row values.
     const rows = await dataView.allRows();
-
-    //clean up and exit if no data
-    if (!rows || rows.length < 1) {
-        displayLayer.selectAll("*").remove();
-        return;
-    }
-
-    const hasValue = !!(await dataView.continuousAxis("Value"));
-
-    //Calculate positions for all elements of the visualization
-    let modHeight = windowSize.height;
-    let modWidth = windowSize.width;
-
-    // set the viewbox of the svg element to match the available drawing area
-    svg.attr("viewBox", "0 0 " + modWidth + " " + modHeight);
-
-    let displayText = "";
-    if (hasValue && rows != null) {
-        let value = rows[0].continuous("Value");
-        let formattedValue = value.formattedValue();
-        displayText = formattedValue == "(Empty)" ? "" : formattedValue;
-    }
-
-    displayLayer
-        .selectAll(".displayText")
-        .data([null])
-        .enter()
-        .append("text")
-        .attr("class", "displayText");
-
-    let fontSize = Math.min((1.5 * modWidth) / displayText.length, modHeight);
-
-
-    displayLayer
-        .selectAll(".displayText")
-        .attr("x", modWidth / 2)
-        .attr("y", modHeight / 2)
-        .attr("alignment-baseline", "central")
-        .style("font-size", fontSize + "px")
-        .text(displayText);
+    if (rows)
+        rows.forEach(row => {
+            console.log(axes.map(axis => {
+                if (axis.isCategorical) {
+                    if (row.isMarked()) {
+                        let newColorSelected: string = row.categorical(axis.name).formattedValue();
+                        colorToPlot = newColorSelected;
+                    }
+                    return row.categorical(axis.name).formattedValue()
+                }
+                return row.continuous(axis.name).value()
+            }).join(","));
+        });
 }
