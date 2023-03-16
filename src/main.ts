@@ -8,11 +8,6 @@ window.Spotfire.initialize(async (mod) => {
         mod.windowSize()
     );
 
-    /**
-     * Creates a function that is part of the main read-render loop.
-     * It checks for valid data and will print errors in case of bad data or bad renders.
-     * It calls the listener (reader) created earlier and adds itself as a callback to complete the loop.
-     */
     reader.subscribe(async (dataView, windowSize, ...axes) => {
         try {
             const errors = await dataView.getErrors();

@@ -7,12 +7,12 @@
     "dataViewDefinition": {
         "axes": [
             {
-                "name": "X",
+                "name": "colors",
                 "mode": "categorical",
                 "placement": "none"
             },
             {
-                "name": "Y",
+                "name": "hexValue",
                 "mode": "categorical",
                 "placement": "none"
             } 
