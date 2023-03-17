@@ -2,10 +2,23 @@ import ButtonItem from "./renderItems/itemCard";
 import P5 from "p5";
 import { colorToPlot } from "./render";
 
-export const sketch = (p5: P5) => {
+
+let itemCards: ButtonItem[] = [];
+
+export const ResizeApp = (p5: P5) => {
+    const x = document.body.clientWidth;
+    const y = document.body.clientHeight;
+    p5.resizeCanvas(x, y);
+    p5.background(255);
+    // Add button to clear:
+    const btnPos = p5.createVector(x, y);
+    itemCards = []
+    itemCards.push(new ButtonItem(p5, btnPos, "clear"));
+}
+
+export const sketch = (p5: P5): P5 => {
     const maxX = document.body.clientWidth;
     const maxY = document.body.clientHeight;
-    const itemCards: ButtonItem[] = [];
 
     let isClickPress: boolean = false;
     let isRightClick: boolean = false;
@@ -39,7 +52,7 @@ export const sketch = (p5: P5) => {
     p5.mouseClicked = (event: any) => {
         // Check if clear is needed
         itemCards.forEach(item => {
-            if(item.checkColision(event.pageX, event.pageY))
+            if (item.checkColision(event.pageX, event.pageY))
                 p5.background(0xff);
         });
     }
@@ -51,4 +64,5 @@ export const sketch = (p5: P5) => {
     p5.mouseReleased = (event: any) => {
         isClickPress = false;
     }
+    return p5;
 };

@@ -1,13 +1,12 @@
 import { Size } from "spotfire-api";
 import P5 from "p5";
-import { sketch } from "./paint";
+import { ResizeApp, sketch } from "./paint";
 
 export let colorToPlot: string = "#000";
-new P5(sketch);
+let p5 = new P5(sketch);
 
 export async function render(
     dataView: Spotfire.DataView,
-    windowSize: Size,
     toolTipDisplayAxes: Spotfire.Axis[],
     mod: Spotfire.Mod
 ) {
@@ -36,4 +35,9 @@ export async function render(
                 return row.continuous(axis.name).value()
             }).join(","));
         });
+}
+
+// Only resize when there is a change in size:
+export async function renderResize(windowSize: Size) {
+    ResizeApp(p5);
 }

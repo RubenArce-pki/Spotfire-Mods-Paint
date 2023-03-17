@@ -1,14 +1,14 @@
-import { render } from "./render";
+import { render, renderResize } from "./render";
 
 window.Spotfire.initialize(async (mod) => {
     const context = mod.getRenderContext();
     // Create reader function which is actually a one time listener for the provided values.
     const reader = mod.createReader(
-        mod.visualization.data(),
-        mod.windowSize()
+        mod.visualization.data()
     );
 
-    reader.subscribe(async (dataView, windowSize, ...axes) => {
+    //reader.subscribe(async (dataView, windowSize, ...axes) => {
+    reader.subscribe(async (dataView, ...axes) => {
         try {
             const errors = await dataView.getErrors();
             if (errors.length > 0) {
@@ -21,7 +21,7 @@ window.Spotfire.initialize(async (mod) => {
                     return;
                 }
 
-                await render(dataView, windowSize, axes, mod);
+                await render(dataView, axes, mod);
 
                 context.signalRenderComplete();
 
@@ -35,4 +35,10 @@ window.Spotfire.initialize(async (mod) => {
             );
         }
     });
+
+    // Subscribe to resize method:
+    mod.createReader(mod.windowSize()).subscribe(async function render(size) {
+        renderResize(size);
+    }
+    )
 });
