@@ -1,5 +1,5 @@
-import { Size } from "spotfire-api";
 import P5 from "p5";
+import { Size } from "spotfire/spotfire-api-1-3";
 import { ResizeApp, sketch } from "./paint";
 
 export let colorToPlot: string = "#000";
@@ -46,11 +46,22 @@ export async function renderResize(windowSize: Size) {
 
 export async function changeInDocProps(mod: Spotfire.Mod) {
     const allProps = await mod.document.properties();
+    let foundProp = false;
     allProps.forEach(element => {
         if (element.name == "SpotSize")
         {
             let newSize = element.value<number>();
             sizeOfSpot = newSize != null ? newSize : 1;
+            foundProp = true;
         }
     });
+
+    // Show pop up if prop does not exist:
+    if(!foundProp)
+        await mod.controls.errorOverlay.show("You must create a Document Property call SpotSize and type Real");
+    else
+        await mod.controls.errorOverlay.hide();
+
+    // In case huge computation:
+    //await mod.controls.progress.hide()
 }
