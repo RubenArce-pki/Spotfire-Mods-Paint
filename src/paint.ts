@@ -1,9 +1,11 @@
 import ButtonItem from "./renderItems/itemCard";
+import Spot from "./renderItems/Spot";
 import P5 from "p5";
 import { colorToPlot } from "./render";
 
 
 let itemCards: ButtonItem[] = [];
+let spots: Spot[] = [];
 
 export const ResizeApp = (p5: P5) => {
     const x = document.body.clientWidth;
@@ -38,22 +40,23 @@ export const sketch = (p5: P5): P5 => {
         // Draw button
         itemCards.forEach(item => item.draw());
 
-        // Draw real picture:
+        // Draw previous paint
+        spots.forEach(item => item.draw());
+
+        // Add more spots to picture:
         if (isClickPress) {
-            if (isRightClick)
-                p5.fill(0xff);
-            else
-                p5.fill(colorToPlot);
-            p5.strokeWeight(0);
-            p5.stroke(255);
-            p5.ellipse(p5.mouseX, p5.mouseY, 15, 15);
+            const sPos = p5.createVector(p5.mouseX, p5.mouseY);
+            const color = isRightClick ? "#fff" : colorToPlot;
+            spots.push(new Spot(p5, sPos, color))
         }
     };
     p5.mouseClicked = (event: any) => {
         // Check if clear is needed
         itemCards.forEach(item => {
-            if (item.checkColision(event.pageX, event.pageY))
+            if (item.checkColision(event.pageX, event.pageY)) {
+                spots = [];
                 p5.background(0xff);
+            }
         });
     }
     p5.mousePressed = (event: any) => {
