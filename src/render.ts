@@ -3,6 +3,7 @@ import P5 from "p5";
 import { ResizeApp, sketch } from "./paint";
 
 export let colorToPlot: string = "#000";
+export let sizeOfSpot: number = 10;
 let p5 = new P5(sketch);
 
 export async function render(
@@ -40,4 +41,16 @@ export async function render(
 // Only resize when there is a change in size:
 export async function renderResize(windowSize: Size) {
     ResizeApp(p5);
+}
+
+
+export async function changeInDocProps(mod: Spotfire.Mod) {
+    const allProps = await mod.document.properties();
+    allProps.forEach(element => {
+        if (element.name == "SpotSize")
+        {
+            let newSize = element.value<number>();
+            sizeOfSpot = newSize != null ? newSize : 1;
+        }
+    });
 }

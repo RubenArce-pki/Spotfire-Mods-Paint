@@ -1,4 +1,4 @@
-import { render, renderResize } from "./render";
+import { changeInDocProps, render, renderResize } from "./render";
 
 window.Spotfire.initialize(async (mod) => {
     const context = mod.getRenderContext();
@@ -41,4 +41,10 @@ window.Spotfire.initialize(async (mod) => {
         renderResize(size);
     }
     )
+
+    // Subscribe to change props:
+    mod.createReader(mod.document.properties()).subscribe(async (dataView, ...axes) => {
+        await changeInDocProps(mod);
+    })
+
 });

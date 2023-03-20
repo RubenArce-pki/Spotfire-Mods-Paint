@@ -1,7 +1,7 @@
 import ButtonItem from "./renderItems/itemCard";
 import Spot from "./renderItems/Spot";
 import P5 from "p5";
-import { colorToPlot } from "./render";
+import { colorToPlot, sizeOfSpot } from "./render";
 
 
 let itemCards: ButtonItem[] = [];
@@ -47,7 +47,7 @@ export const sketch = (p5: P5): P5 => {
         if (isClickPress) {
             const sPos = p5.createVector(p5.mouseX, p5.mouseY);
             const color = isRightClick ? "#fff" : colorToPlot;
-            spots.push(new Spot(p5, sPos, color))
+            spots.push(new Spot(p5, sPos, color, sizeOfSpot))
         }
     };
     p5.mouseClicked = (event: any) => {
